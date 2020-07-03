@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        background-color: black;
+        color: white;
+      }
+    </style>
+  </head>
+<body>
+
+  <video style="background-color: black;" id="camera" src="intro.webm" width="200" height="100"></video>
+  <div>
+    <button onclick="showWebcam()">Mostrar webcam in PIP</button>
+  </div>
+  
+  <script>
+
+    function showWebcam(){
+
+      const camera = document.querySelector('#camera')
+      enterPictureInPicture(camera)
+      navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+        .then((stream) => {
+          camera.srcObject = stream
+          camera.play()
+        })
+        .catch((err) => {
+          console.log("Erro: " + err)
+        })
+    }
+
+    function enterPictureInPicture(videoElement) {
+      
+      if (document.pictureInPictureEnabled && !videoElement.disablePictureInPicture) {
+        try {
+          if (document.pictureInPictureElement) {
+            document.exitPictureInPicture()
+          }
+          videoElement.requestPictureInPicture()
+        } catch (err) {
+          console.error(err)
+        }
+      }
+    }
+    
+  </script>
+</body>
+</html>
